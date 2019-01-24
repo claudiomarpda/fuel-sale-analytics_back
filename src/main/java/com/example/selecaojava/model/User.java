@@ -34,7 +34,7 @@ public class User {
     @NotEmpty
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = User.PK),
             inverseJoinColumns = @JoinColumn(name = Role.PK))
