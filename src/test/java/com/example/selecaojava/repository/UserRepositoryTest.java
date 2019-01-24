@@ -40,14 +40,14 @@ public class UserRepositoryTest {
         // Find role
         Set<Role> onlyAdmin = Collections.singleton(roleRepository.findByName(Role.ADMIN).orElseThrow(RuntimeException::new));
         // Create user
-        User admin = userRepository.save(new User(null, "Admin", "admin@email.com", "123", onlyAdmin));
+        User admin = userRepository.save(new User(null, "Admin", "admin@email.com", "123", onlyAdmin, true));
         // Admin exists
         assertTrue(userRepository.findById(admin.getId()).isPresent());
         // Admin has role ADMIN
         assertTrue(admin.getRoles().containsAll(onlyAdmin));
 
         Set<Role> onlyUser = Collections.singleton(roleRepository.findByName(Role.USER).orElseThrow(RuntimeException::new));
-        User user = userRepository.save(new User(null, "User", "user@email.com", "123", onlyUser));
+        User user = userRepository.save(new User(null, "User", "user@email.com", "123", onlyUser, true));
         assertTrue(userRepository.findById(user.getId()).isPresent());
         assertTrue(user.getRoles().containsAll(onlyUser));
     }

@@ -41,4 +41,6 @@ public class User {
     @Column(nullable = false)
     private Set<Role> roles = new HashSet<>();
 
+    private boolean active;
+
 }

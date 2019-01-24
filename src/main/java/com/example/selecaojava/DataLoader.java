@@ -36,8 +36,8 @@ public class DataLoader implements CommandLineRunner {
         // Load users
         // Saving password in plain text, for now
         userRepository.saveAll(Arrays.asList(
-                new User(null, "User A", "email_a@email.com", "123", onlyAdmin),
-                new User(null, "User B", "email_b@email.com", "123", onlyUser)
+                new User(null, "User A", "email_a@email.com", "123", onlyAdmin, true),
+                new User(null, "User B", "email_b@email.com", "123", onlyUser, true)
         ));
     }
 }
