@@ -24,7 +24,7 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    UserDetailsImpl(User user) {
+    public UserDetailsImpl(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();

@@ -55,10 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+
+                // Disable security on /admin/** to access this API from Swagger UI
+//                .antMatchers("/admin/**").hasRole(Role.ADMIN.substring("ROLE_".length()))
+
                 .antMatchers("/auth/**").permitAll();
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Bean
@@ -67,3 +70,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+
