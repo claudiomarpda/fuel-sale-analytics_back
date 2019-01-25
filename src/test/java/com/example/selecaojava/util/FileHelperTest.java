@@ -1,15 +1,13 @@
 package com.example.selecaojava.util;
 
-import com.example.selecaojava.model.County;
-import com.example.selecaojava.model.Product;
-import com.example.selecaojava.model.Region;
-import com.example.selecaojava.model.State;
+import com.example.selecaojava.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.security.x509.AlgorithmId;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +23,7 @@ public class FileHelperTest {
     private List<County> counties;
     private List<Region> regions;
     private List<Product> products;
+    private List<Banner> banners;
 
     @Autowired
     private FileHelper fileHelper;
@@ -35,6 +34,7 @@ public class FileHelperTest {
         counties = fileHelper.readCounties();
         regions = fileHelper.readRegions();
         products = fileHelper.readProducts();
+        banners = fileHelper.readBanners();
     }
 
     @Test
@@ -117,4 +117,20 @@ public class FileHelperTest {
         Product first = products.get(0);
         assertEquals("DIESEL", first.getName());
     }
+
+    @Test
+    public void firstBannerShouldNotMatch() {
+        Banner first = banners.get(0);
+        assertNotEquals("invalid", first.getName());
+    }
+
+    /**
+     * IPIRANGA
+     */
+    @Test
+    public void firstBannerMustBeSameAsDescribedAbove() {
+        Banner first = banners.get(0);
+        assertEquals("IPIRANGA", first.getName());
+    }
+
 }

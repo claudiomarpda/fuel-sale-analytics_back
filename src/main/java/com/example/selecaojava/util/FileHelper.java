@@ -1,9 +1,6 @@
 package com.example.selecaojava.util;
 
-import com.example.selecaojava.model.County;
-import com.example.selecaojava.model.Product;
-import com.example.selecaojava.model.Region;
-import com.example.selecaojava.model.State;
+import com.example.selecaojava.model.*;
 import com.example.selecaojava.repository.StateRepository;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +18,7 @@ public class FileHelper {
     private static final String COUNTY_PATH = STATIC_PATH + "/municipios.csv";
     private static final String REGIONS_PATH = STATIC_PATH + "/regioes.csv";
     private static final String PRODUCTS_PATH = STATIC_PATH + "/produtos.txt";
+    private static final String BANNERS_PATH = STATIC_PATH + "/bandeiras.txt";
 
     private final StateRepository stateRepository;
 
@@ -86,6 +84,16 @@ public class FileHelper {
             products.add(new Product(null, row));
         }
         return products;
+    }
+
+    public List<Banner> readBanners() throws IOException {
+        final String[] rows = readFileAsString(BANNERS_PATH).split("\n");
+        List<Banner> banners = new ArrayList<>(rows.length);
+
+        for (String row : rows) {
+            banners.add(new Banner(null, row));
+        }
+        return banners;
     }
 
 }

@@ -6,4 +6,5 @@ public interface FileRecords {
     int COUNTIES = 5570;
     int REGIONS = 5;
     int PRODUCTS = 5;
+    int BANNERS = 62;
 }
