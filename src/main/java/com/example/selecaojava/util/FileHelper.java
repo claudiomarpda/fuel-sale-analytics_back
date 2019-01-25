@@ -1,7 +1,5 @@
 package com.example.selecaojava.util;
 
-import com.example.selecaojava.model.County;
-import com.example.selecaojava.model.Product;
 import com.example.selecaojava.model.Region;
 import com.example.selecaojava.model.State;
 import com.example.selecaojava.repository.StateRepository;
@@ -27,6 +25,20 @@ public class FileHelper {
     }
 
     /**
+     * Row format: codigo_uf, uf, nome
+     */
+    public List<State> readStates() throws IOException {
+        final String[] rows = readFileAsString(STATES_PATH).split("\n");
+        List<State> states = new ArrayList<>(rows.length);
+
+        for (String row : rows) {
+            String[] columns = row.split(",");
+            states.add(new State(null, Integer.valueOf(columns[0]), columns[1], columns[2]));
+        }
+        return states;
+    }
+
+    /**
      * Row format: code, name
      */
     public List<Region> readRegions() throws IOException {
@@ -35,7 +47,6 @@ public class FileHelper {
 
         for (String row : rows) {
             String[] columns = row.split(",");
-            System.out.println(columns[1]);
             regions.add(new Region(null, columns[0], columns[1]));
         }
         return regions;
