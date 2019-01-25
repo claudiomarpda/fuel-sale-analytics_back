@@ -75,4 +75,17 @@ public class FileHelper {
         return regions;
     }
 
+    /**
+     * Row format: name
+     */
+    public List<Product> readProducts() throws IOException {
+        final String[] rows = readFileAsString(PRODUCTS_PATH).split("\n");
+        List<Product> products = new ArrayList<>(rows.length);
+
+        for (String row : rows) {
+            products.add(new Product(null, row));
+        }
+        return products;
+    }
+
 }
