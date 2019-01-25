@@ -1,5 +1,6 @@
 package com.example.selecaojava.service.impl;
 
+import com.example.selecaojava.repository.CountyRepository;
 import com.example.selecaojava.repository.RegionRepository;
 import com.example.selecaojava.repository.StateRepository;
 import com.example.selecaojava.service.FileService;
@@ -14,11 +15,13 @@ public class FileServiceImpl implements FileService {
     private final FileHelper fileReader;
     private final RegionRepository regionRepository;
     private final StateRepository stateRepository;
+    private final CountyRepository countyRepository;
 
-    public FileServiceImpl(FileHelper fr, RegionRepository rr, StateRepository sr) {
+    public FileServiceImpl(RegionRepository rr, StateRepository sr, CountyRepository cr, FileHelper fr) {
         this.fileReader = fr;
         this.regionRepository = rr;
         this.stateRepository = sr;
+        this.countyRepository = cr;
     }
 
     @Override
@@ -26,6 +29,7 @@ public class FileServiceImpl implements FileService {
         try {
             regionRepository.saveAll(fileReader.readRegions());
             stateRepository.saveAll(fileReader.readStates());
+            countyRepository.saveAll(fileReader.readCounties());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,7 @@
 package com.example.selecaojava.util;
 
+import com.example.selecaojava.model.County;
+import com.example.selecaojava.model.Product;
 import com.example.selecaojava.model.Region;
 import com.example.selecaojava.model.State;
 import com.example.selecaojava.repository.StateRepository;
@@ -20,6 +22,12 @@ public class FileHelper {
     private static final String REGIONS_PATH = STATIC_PATH + "/regioes.csv";
     private static final String PRODUCTS_PATH = STATIC_PATH + "/produtos.txt";
 
+    private final StateRepository stateRepository;
+
+    public FileHelper(StateRepository sr) {
+        this.stateRepository = sr;
+    }
+
     private String readFileAsString(String fullPath) throws IOException {
         return new String(Files.readAllBytes(Paths.get(fullPath)));
     }
@@ -36,6 +44,21 @@ public class FileHelper {
             states.add(new State(null, Integer.valueOf(columns[0]), columns[1], columns[2]));
         }
         return states;
+    }
+
+    /**
+     * Row format: codigo_ibge,nome,latitude,longitude,capital,codigo_uf
+     */
+    public List<County> readCounties() throws IOException {
+        final String[] rows = readFileAsString(COUNTY_PATH).split("\n");
+        List<County> counties = new ArrayList<>(rows.length);
+
+        for (String row : rows) {
+            String[] columns = row.split(",");
+            State state = stateRepository.findByUfCode(Integer.valueOf(columns[5])).orElseThrow(RuntimeException::new);
+            counties.add(new County(null, Integer.valueOf(columns[0]), columns[1], state));
+        }
+        return counties;
     }
 
     /**
