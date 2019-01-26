@@ -3,6 +3,7 @@ package com.example.selecaojava.controller;
 import com.example.selecaojava.payload.JwtAuthResponse;
 import com.example.selecaojava.payload.SignInRequest;
 import com.example.selecaojava.security.JwtCreator;
+import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@Api(description = "Autenticação")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

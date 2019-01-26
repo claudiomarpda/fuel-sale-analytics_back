@@ -2,6 +2,7 @@ package com.example.selecaojava.controller;
 
 import com.example.selecaojava.model.User;
 import com.example.selecaojava.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -11,6 +12,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/admin/users")
+@Api(description = "Usuário")
 public class UserController {
 
     private final UserService userService;
