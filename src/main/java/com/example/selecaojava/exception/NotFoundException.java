@@ -13,4 +13,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String type, Integer id) {
         super(type + " não encontrado(a) com id " + id);
     }
+
+    public NotFoundException(String s) {
+        super(s);
+    }
 }
