@@ -1,6 +1,7 @@
 package com.example.selecaojava.service.impl;
 
 import com.example.selecaojava.exception.InvalidInputException;
+import com.example.selecaojava.exception.NotFoundException;
 import com.example.selecaojava.model.Collect;
 import com.example.selecaojava.repository.*;
 import com.example.selecaojava.service.CollectService;
@@ -51,5 +52,40 @@ public class CollectServiceImpl implements CollectService {
         } catch (IOException e) {
             throw new InvalidInputException("Falha ao ler bytes de arquivo");
         }
+    }
+
+    @Override
+    public Collect create(Collect collect) {
+        checkNestedEntitiesExist(collect);
+        return collectRepository.save(collect);
+    }
+
+    @Override
+    public Collect findById(Long id) {
+        return collectRepository.findById(id).orElseThrow(() -> new NotFoundException("Coleta", id));
+    }
+
+    @Override
+    public Collect update(Long id, Collect collect) {
+        checkNestedEntitiesExist(collect);
+        Collect c = findById(id);
+        collect.setId(c.getId());
+        return collectRepository.save(collect);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        collectRepository.deleteById(findById(id).getId());
+    }
+
+    private void checkNestedEntitiesExist(Collect collect) {
+        // Region
+        regionRepository.findById(collect.getRegion().getId()).orElseThrow(() -> new NotFoundException("Região", collect.getRegion().getId()));
+        // Product
+        productRepository.findById(collect.getProduct().getId()).orElseThrow(() -> new NotFoundException("Produto", collect.getProduct().getId()));
+        // County
+        countyRepository.findById(collect.getCounty().getId()).orElseThrow(() -> new NotFoundException("County", collect.getCounty().getId()));
+        // Banner
+        bannerRepository.findById(collect.getBanner().getId()).orElseThrow(() -> new NotFoundException("Banner", collect.getBanner().getId()));
     }
 }

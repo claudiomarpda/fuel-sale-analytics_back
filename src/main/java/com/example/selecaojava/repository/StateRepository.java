@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StateRepository extends PagingAndSortingRepository<State, Long> {
+public interface StateRepository extends PagingAndSortingRepository<State, Integer> {
 
     Optional<State> findByUfCode(int ufCode);
 
