@@ -1,17 +1,19 @@
 package com.example.selecaojava.util;
 
 import com.example.selecaojava.model.*;
+import com.example.selecaojava.repository.StateRepository;
+import com.example.selecaojava.util.file.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.security.x509.AlgorithmId;
 
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.selecaojava.util.file.FileRecords.COUNTIES_PATH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -26,15 +28,15 @@ public class FileHelperTest {
     private List<Banner> banners;
 
     @Autowired
-    private FileHelper fileHelper;
+    private StateRepository stateRepository;
 
     @Before
     public void setUp() throws IOException {
-        states = fileHelper.readStates();
-        counties = fileHelper.readCounties();
-        regions = fileHelper.readRegions();
-        products = fileHelper.readProducts();
-        banners = fileHelper.readBanners();
+        states = new StatesReader().read(FileRecords.STATES_PATH);
+        counties = CountyDtoUtil.getFromDto(new CountiesReader().read(COUNTIES_PATH), stateRepository);
+        regions = new RegionsReader().read(FileRecords.REGIONS_PATH);
+        products = new ProductsReader().read(FileRecords.PRODUCTS_PATH);
+        banners = new BannersReader().read(FileRecords.BANNERS_PATH);
     }
 
     @Test
