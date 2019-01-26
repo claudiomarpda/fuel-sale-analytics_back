@@ -1,4 +1,4 @@
-package com.example.selecaojava.util;
+package com.example.selecaojava.util.file;
 
 public interface FileRecords {
 
@@ -8,7 +8,6 @@ public interface FileRecords {
     String REGIONS_PATH = STATIC_PATH + "/regioes.csv";
     String PRODUCTS_PATH = STATIC_PATH + "/produtos.txt";
     String BANNERS_PATH = STATIC_PATH + "/bandeiras.csv";
-    String COLLECTS_PATH = STATIC_PATH + "/coletas_2018-1_CA.csv";
 
     int STATES = 27;
     int COUNTIES = 5570;
