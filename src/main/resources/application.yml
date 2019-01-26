@@ -3,9 +3,9 @@ spring:
     console:
       enabled: true
   jpa:
-    show-sql: true
+    show-sql: false
 
-# This app own properties
+# This app properties
 app:
   jwtSecret: ${JWT_SECRET}
   jwtExpirationInMs: ${JWT_EXPIRATION_IN_MS}
