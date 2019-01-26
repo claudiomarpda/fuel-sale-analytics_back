@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CollectsReaderUtilTest {
+public class CollectionsReaderUtilTest {
 
     @Autowired
     private RegionRepository regionRepository;
@@ -48,7 +48,7 @@ public class CollectsReaderUtilTest {
 
     @Test
     public void readFileReturnsRightNumberOfElements() {
-        assertEquals(10000, collects.size());
+        assertEquals(1000, collects.size());
     }
 
 }

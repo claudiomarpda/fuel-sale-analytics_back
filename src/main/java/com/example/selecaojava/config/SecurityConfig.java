@@ -59,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Disable security on /admin/** to access this API from Swagger UI
 //                .antMatchers("/admin/**").hasRole(Role.ADMIN.substring("ROLE_".length()))
 
-                .antMatchers("/auth/**").permitAll();
+                .antMatchers("/auth/**").permitAll()
+                .and()
+                .headers().frameOptions().sameOrigin();
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
