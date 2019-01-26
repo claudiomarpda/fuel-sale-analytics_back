@@ -3,6 +3,8 @@ package com.example.selecaojava.service;
 import com.example.selecaojava.model.Collect;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface CollectService {
 
     void importCsv(MultipartFile file);
@@ -16,6 +18,8 @@ public interface CollectService {
     void deleteById(Long id);
 
     Double getAvgSalePriceByCounty(String county);
+
+    List<Collect> getAllFromImportedCsvByRegionCode(MultipartFile file, String regionCode);
 
 }
 

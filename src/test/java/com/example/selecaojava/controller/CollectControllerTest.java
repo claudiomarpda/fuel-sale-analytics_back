@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -202,6 +203,22 @@ public class CollectControllerTest {
                 .with(user("user").roles(RoleName.USER)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.is(avg)));
+    }
+
+    /***
+     * This test works accooding to a specific file
+     * */
+    @Test
+    public void getAllFromCsvByRegionCodeSucceeds() throws Exception {
+        byte[] data = FileUtil.getFileBytes("src/test/resources/coletas.csv");
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "coletas.csv", MediaType.ALL_VALUE, data);
+
+        mvc.perform(multipart("/user/collections/allFromCsv?regionCode=" + "SE")
+                .file(multipartFile)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .with(user("user").roles(RoleName.USER)))
+                .andExpect(jsonPath("$", hasSize(996)))
+                .andExpect(status().isOk());
     }
 
 }

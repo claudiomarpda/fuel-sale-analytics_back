@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user/collections")
@@ -22,18 +23,6 @@ public class CollectController {
 
     public CollectController(CollectService cs) {
         this.collectService = cs;
-    }
-
-    /**
-     * TODO: responder com detalhes do arquivo recebido: numero de registros, tamanho e nome do arquivo
-     */
-    @ApiOperation(value = "importCsv", notes = "Arquivo separado por ; (ponto e vírgula)")
-    @PostMapping(value = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> importCsv(@RequestParam MultipartFile file) {
-        collectService.importCsv(file);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.created(location).build();
     }
 
     @PostMapping
@@ -61,6 +50,24 @@ public class CollectController {
     @GetMapping(value = "/avgSalePrice", params = "county")
     public Double getAvgSalePriceByCounty(@RequestParam String county) {
         return collectService.getAvgSalePriceByCounty(county);
+    }
+
+    /**
+     * TODO: responder com detalhes do arquivo recebido: numero de registros, tamanho e nome do arquivo
+     */
+    @ApiOperation(value = "importCsv", notes = "Arquivo separado por ; (ponto e vírgula)")
+    @PostMapping(value = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> importCsv(@RequestParam MultipartFile file) {
+        collectService.importCsv(file);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @ApiOperation(value = "getAllFromCsvByRegionCode", notes = "Retorna todas todas coletas de arquivo CSV de acordo com código da região")
+    @PostMapping(value = "/allFromCsv", params = "regionCode", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<Collect> getAllFromCsvByRegionCode(@RequestParam MultipartFile file, @RequestParam String regionCode) {
+        return collectService.getAllFromImportedCsvByRegionCode(file, regionCode);
     }
 
 }
