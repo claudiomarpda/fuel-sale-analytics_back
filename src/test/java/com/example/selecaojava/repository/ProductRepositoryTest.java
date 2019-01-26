@@ -1,6 +1,6 @@
 package com.example.selecaojava.repository;
 
-import com.example.selecaojava.util.FileRecords;
+import com.example.selecaojava.util.file.FileRecords;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
