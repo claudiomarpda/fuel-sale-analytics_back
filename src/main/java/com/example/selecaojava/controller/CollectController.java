@@ -58,4 +58,9 @@ public class CollectController {
         collectService.deleteById(collectId);
     }
 
+    @GetMapping(value = "/avgSalePrice", params = "county")
+    public Double getAvgSalePriceByCounty(@RequestParam String county) {
+        return collectService.getAvgSalePriceByCounty(county);
+    }
+
 }

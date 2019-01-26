@@ -14,6 +14,9 @@ public interface CollectService {
     Collect update(Long id, Collect collect);
 
     void deleteById(Long id);
+
+    Double getAvgSalePriceByCounty(String county);
+
 }
 
 

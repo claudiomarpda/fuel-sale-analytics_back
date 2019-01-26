@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -52,14 +53,27 @@ public class CollectControllerTest {
 
     private Collect collect;
 
+    private Region region;
+    private County county;
+    private County county2;
+    private Product product;
+    private Banner banner;
+
     @Before
     public void setUp() {
-        Region region = regionRepository.findAll().iterator().next();
-        County county = countyRepository.findAll().iterator().next();
-        Product product = productRepository.findAll().iterator().next();
-        Banner banner = bannerRepository.findAll().iterator().next();
+        region = regionRepository.findAll().iterator().next();
+        List<County> counties = (List<County>) countyRepository.findAll();
+        county = counties.get(0);
+        county2 = counties.get(1);
+        assertNotEquals(county.getName(), county2.getName());
+        product = productRepository.findAll().iterator().next();
+        banner = bannerRepository.findAll().iterator().next();
 
-        collect = new Collect(null, region, county, product, "AUTO POSTO", LocalDate.now(), 3.79, 3.99, "R$ / Litro", banner);
+        collect = getCollect();
+    }
+
+    private Collect getCollect() {
+        return new Collect(null, region, county, product, "AUTO POSTO", LocalDate.now(), 3.79, 3.99, "R$ / Litro", banner);
     }
 
     @Test
@@ -88,6 +102,14 @@ public class CollectControllerTest {
     public void createSucceeds() throws Exception {
         makePost();
         assertTrue(collectRepository.findAll().iterator().hasNext());
+    }
+
+    @Test
+    public void createTwoSucceeds() throws Exception {
+        collectRepository.deleteAll();
+        makePost();
+        makePost();
+        assertEquals(2, collectRepository.findAll().spliterator().getExactSizeIfKnown());
     }
 
     @Test
@@ -143,6 +165,43 @@ public class CollectControllerTest {
                 .andExpect(status().isOk());
 
         assertFalse(collectRepository.findById(collect.getId()).isPresent());
+    }
+
+
+    @Test
+    public void go() throws Exception {
+        collectRepository.deleteAll();
+        assertFalse(collectRepository.findAll().iterator().hasNext());
+
+        String name = county.getName();
+
+        // Same county
+        double p1 = 3.9874;
+        collect = getCollect();
+        collect.setSalePrice(p1);
+        collectRepository.save(collect);
+
+        // Same county
+        double p2 = 3.79841;
+        collect = getCollect();
+        collect.setSalePrice(p2);
+        collectRepository.save(collect);
+
+        // Different county
+        collect = getCollect();
+        collect.setSalePrice(9.0);
+        collect.setCounty(county2);
+        collectRepository.save(collect);
+
+        // 3 entities
+        assertEquals(3, collectRepository.findAll().spliterator().getExactSizeIfKnown());
+
+        Double avg = (p1 + p2) / 2.0;
+
+        mvc.perform(get("/user/collections/avgSalePrice?county=" + name)
+                .with(user("user").roles(RoleName.USER)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.is(avg)));
     }
 
 }

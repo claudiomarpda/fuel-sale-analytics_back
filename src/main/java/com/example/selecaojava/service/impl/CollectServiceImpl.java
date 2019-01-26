@@ -78,6 +78,13 @@ public class CollectServiceImpl implements CollectService {
         collectRepository.deleteById(findById(id).getId());
     }
 
+    @Override
+    public Double getAvgSalePriceByCounty(String county) {
+        Double d = collectRepository.findAvgSalePriceByCountyName(county);
+        System.out.println(d);
+        return d;
+    }
+
     private void checkNestedEntitiesExist(Collect collect) {
         // Region
         regionRepository.findById(collect.getRegion().getId()).orElseThrow(() -> new NotFoundException("Região", collect.getRegion().getId()));
