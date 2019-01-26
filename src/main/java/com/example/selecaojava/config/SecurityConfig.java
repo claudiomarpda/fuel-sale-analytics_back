@@ -1,5 +1,6 @@
 package com.example.selecaojava.config;
 
+import com.example.selecaojava.model.RoleName;
 import com.example.selecaojava.security.JwtAuthenticationEntryPoint;
 import com.example.selecaojava.security.JwtAuthenticationFilter;
 import com.example.selecaojava.security.UserDetailsServiceImpl;
@@ -44,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * You can disable security on authenticated user roles to access the API on Swagger UI
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -55,10 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-
-                // Disable security on /admin/** to access this API from Swagger UI
-//                .antMatchers("/admin/**").hasRole(Role.ADMIN.substring("ROLE_".length()))
-
+                .antMatchers("/admin/**").hasRole(RoleName.ADMIN)
+                .antMatchers("/user/**").hasRole(RoleName.USER)
                 .antMatchers("/auth/**").permitAll()
                 .and()
                 .headers().frameOptions().sameOrigin();

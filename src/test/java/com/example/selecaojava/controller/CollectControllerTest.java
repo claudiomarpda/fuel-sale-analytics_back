@@ -1,5 +1,6 @@
 package com.example.selecaojava.controller;
 
+import com.example.selecaojava.model.RoleName;
 import com.example.selecaojava.util.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +32,7 @@ public class CollectControllerTest {
         mvc.perform(multipart("/user/collections/files")
                 .file(multipartFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .with(user("user")))
+                .with(user("user").roles(RoleName.USER)))
                 .andExpect(status().isCreated());
     }
 

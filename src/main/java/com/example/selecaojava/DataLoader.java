@@ -1,6 +1,7 @@
 package com.example.selecaojava;
 
 import com.example.selecaojava.model.Role;
+import com.example.selecaojava.model.RoleName;
 import com.example.selecaojava.model.User;
 import com.example.selecaojava.repository.*;
 import com.example.selecaojava.util.file.*;
@@ -15,6 +16,9 @@ import java.util.Set;
 
 import static com.example.selecaojava.util.file.FileRecords.*;
 
+/**
+ * This class loads data mainly for testing
+ */
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -43,11 +47,11 @@ public class DataLoader implements CommandLineRunner {
 
         // Load roles
         roleRepository.saveAll(Arrays.asList(
-                new Role(1, Role.ADMIN),
-                new Role(2, Role.USER)));
+                new Role(1, RoleName.ROLE_ADMIN),
+                new Role(2, RoleName.ROLE_USER)));
 
-        Set<Role> onlyAdmin = Collections.singleton(roleRepository.findByName(Role.ADMIN).orElseThrow(RuntimeException::new));
-        Set<Role> onlyUser = Collections.singleton(roleRepository.findByName(Role.USER).orElseThrow(RuntimeException::new));
+        Set<Role> onlyAdmin = Collections.singleton(roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(RuntimeException::new));
+        Set<Role> onlyUser = Collections.singleton(roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(RuntimeException::new));
 
         String hashPwd = passwordEncoder.encode("123");
 

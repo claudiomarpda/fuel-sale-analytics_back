@@ -1,6 +1,7 @@
 package com.example.selecaojava.repository;
 
 import com.example.selecaojava.model.Role;
+import com.example.selecaojava.model.RoleName;
 import com.example.selecaojava.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +30,8 @@ public class UserRepositoryTest {
     @Before
     public void setUp() {
         List<Role> roles = Arrays.asList(
-                new Role(1, Role.ADMIN),
-                new Role(2, Role.USER));
+                new Role(1, RoleName.ROLE_ADMIN),
+                new Role(2, RoleName.ROLE_USER));
 
         roleRepository.saveAll(roles);
     }
@@ -38,7 +39,7 @@ public class UserRepositoryTest {
     @Test
     public void createUsersSucceeds() {
         // Find role
-        Set<Role> onlyAdmin = Collections.singleton(roleRepository.findByName(Role.ADMIN).orElseThrow(RuntimeException::new));
+        Set<Role> onlyAdmin = Collections.singleton(roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(RuntimeException::new));
         // Create user
         User admin = userRepository.save(new User(null, "Admin", "admin@email.com", "123", onlyAdmin, true));
         // Admin exists
@@ -46,7 +47,7 @@ public class UserRepositoryTest {
         // Admin has role ADMIN
         assertTrue(admin.getRoles().containsAll(onlyAdmin));
 
-        Set<Role> onlyUser = Collections.singleton(roleRepository.findByName(Role.USER).orElseThrow(RuntimeException::new));
+        Set<Role> onlyUser = Collections.singleton(roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(RuntimeException::new));
         User user = userRepository.save(new User(null, "User", "user@email.com", "123", onlyUser, true));
         assertTrue(userRepository.findById(user.getId()).isPresent());
         assertTrue(user.getRoles().containsAll(onlyUser));

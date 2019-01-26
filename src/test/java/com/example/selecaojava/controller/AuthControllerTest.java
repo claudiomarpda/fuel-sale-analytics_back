@@ -1,6 +1,7 @@
 package com.example.selecaojava.controller;
 
 import com.example.selecaojava.model.Role;
+import com.example.selecaojava.model.RoleName;
 import com.example.selecaojava.model.User;
 import com.example.selecaojava.payload.SignInRequest;
 import com.example.selecaojava.repository.RoleRepository;
@@ -52,8 +53,8 @@ public class AuthControllerTest {
 
     @Before
     public void setUp() {
-        adminRole = new Role(1, Role.ADMIN);
-        userRole = new Role(2, Role.USER);
+        adminRole = new Role(1, RoleName.ROLE_ADMIN);
+        userRole = new Role(2, RoleName.ROLE_USER);
         roleRepository.saveAll(Arrays.asList(adminRole, userRole));
 
         rawPwd = "123";

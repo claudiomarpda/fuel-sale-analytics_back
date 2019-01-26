@@ -1,6 +1,7 @@
 package com.example.selecaojava.repository;
 
 import com.example.selecaojava.model.Role;
+import com.example.selecaojava.model.RoleName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,21 +26,21 @@ public class RoleRepositoryTest {
     @Before
     public void setUp() {
         roles = Arrays.asList(
-                new Role(1, Role.ADMIN),
-                new Role(2, Role.USER));
+                new Role(1, RoleName.ROLE_ADMIN),
+                new Role(2, RoleName.ROLE_USER));
     }
 
     @Test
     public void findByNameShouldFail() {
-        assertFalse(roleRepository.findByName(Role.ADMIN).isPresent());
-        assertFalse(roleRepository.findByName(Role.USER).isPresent());
+        assertFalse(roleRepository.findByName(RoleName.ROLE_ADMIN).isPresent());
+        assertFalse(roleRepository.findByName(RoleName.ROLE_USER).isPresent());
     }
 
     @Test
     public void findByNameShouldSucceed() {
         roleRepository.saveAll(roles);
 
-        assertTrue(roleRepository.findByName(Role.ADMIN).isPresent());
-        assertTrue(roleRepository.findByName(Role.USER).isPresent());
+        assertTrue(roleRepository.findByName(RoleName.ROLE_ADMIN).isPresent());
+        assertTrue(roleRepository.findByName(RoleName.ROLE_USER).isPresent());
     }
 }

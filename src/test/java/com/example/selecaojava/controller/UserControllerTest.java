@@ -1,6 +1,7 @@
 package com.example.selecaojava.controller;
 
 import com.example.selecaojava.model.Role;
+import com.example.selecaojava.model.RoleName;
 import com.example.selecaojava.model.User;
 import com.example.selecaojava.repository.RoleRepository;
 import com.example.selecaojava.repository.UserRepository;
@@ -55,8 +56,8 @@ public class UserControllerTest {
 
     @Before
     public void setUp() {
-        Role roleAdmin = new Role(1, Role.ADMIN);
-        Role roleUser = new Role(2, Role.USER);
+        Role roleAdmin = new Role(1, RoleName.ROLE_ADMIN);
+        Role roleUser = new Role(2, RoleName.ROLE_USER);
         roleRepository.saveAll(Arrays.asList(roleAdmin, roleUser));
 
         String hashPwd = passwordEncoder.encode("123");
