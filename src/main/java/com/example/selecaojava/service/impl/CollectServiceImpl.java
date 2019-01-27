@@ -5,7 +5,10 @@ import com.example.selecaojava.exception.NotFoundException;
 import com.example.selecaojava.model.Collect;
 import com.example.selecaojava.repository.*;
 import com.example.selecaojava.service.CollectService;
+import com.example.selecaojava.util.DateUtil;
 import com.example.selecaojava.util.file.CollectsReaderUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,9 +61,7 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public Double getAvgSalePriceByCounty(String county) {
-        Double d = collectRepository.getAvgSalePriceByCountyName(county);
-        System.out.println(d);
-        return d;
+        return collectRepository.getAvgSalePriceByCountyName(county);
     }
 
     @Override
@@ -102,5 +103,15 @@ public class CollectServiceImpl implements CollectService {
         countyRepository.findById(collect.getCounty().getId()).orElseThrow(() -> new NotFoundException("County", collect.getCounty().getId()));
         // Banner
         bannerRepository.findById(collect.getBanner().getId()).orElseThrow(() -> new NotFoundException("Banner", collect.getBanner().getId()));
+    }
+
+    @Override
+    public Page<Collect> findAllByBannerName(String name, Pageable pageable) {
+        return collectRepository.findAllByBanner_Name(name, pageable);
+    }
+
+    @Override
+    public Page<Collect> findAllByDate(String date, Pageable pageable) {
+        return collectRepository.findAllByDate(DateUtil.getDateForH2(date), pageable);
     }
 }

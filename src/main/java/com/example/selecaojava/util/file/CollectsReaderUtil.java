@@ -6,10 +6,9 @@ import com.example.selecaojava.repository.BannerRepository;
 import com.example.selecaojava.repository.CountyRepository;
 import com.example.selecaojava.repository.ProductRepository;
 import com.example.selecaojava.repository.RegionRepository;
+import com.example.selecaojava.util.DateUtil;
 import com.example.selecaojava.util.WordsComparator;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class CollectsReaderUtil {
                 // Product
                 collect.setProduct(findProduct(columns[4]));
                 // Date
-                collect.setDate(getLocalDate(columns[5]));
+                collect.setDate(DateUtil.getLocalDate(columns[5]));
                 // Purchase price
                 collect.setPurchasePrice(getPrice(columns[6]));
                 // Sale price
@@ -86,11 +85,6 @@ public class CollectsReaderUtil {
 
     private Product findProduct(String name) {
         return productRepository.findByName(name).orElseThrow(() -> new RuntimeException("Produto não encontrado: " + name));
-    }
-
-    private LocalDate getLocalDate(String date) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(date, formatter);
     }
 
     private Banner findBanner(String name) {

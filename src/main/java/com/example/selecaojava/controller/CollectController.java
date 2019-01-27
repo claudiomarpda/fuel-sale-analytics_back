@@ -4,6 +4,8 @@ import com.example.selecaojava.model.Collect;
 import com.example.selecaojava.service.CollectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +49,9 @@ public class CollectController {
         collectService.deleteById(collectId);
     }
 
-    @GetMapping(value = "/avgSalePrice", params = "county")
-    public Double getAvgSalePriceByCounty(@RequestParam String county) {
-        return collectService.getAvgSalePriceByCounty(county);
+    @GetMapping(value = "/avgSalePrice", params = "countyName")
+    public Double getAvgSalePriceByCounty(@RequestParam String countyName) {
+        return collectService.getAvgSalePriceByCounty(countyName);
     }
 
     /**
@@ -64,10 +66,21 @@ public class CollectController {
         return ResponseEntity.created(location).build();
     }
 
-    @ApiOperation(value = "getAllFromCsvByRegionCode", notes = "Retorna todas todas coletas de arquivo CSV de acordo com código da região")
+    @ApiOperation(value = "getAllFromCsvByRegionCode", notes = "Retorna coletas de arquivo CSV de acordo com código da região")
     @PostMapping(value = "/allFromCsv", params = "regionCode", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<Collect> getAllFromCsvByRegionCode(@RequestParam MultipartFile file, @RequestParam String regionCode) {
         return collectService.getAllFromImportedCsvByRegionCode(file, regionCode);
     }
 
+    @ApiOperation(value = "findAllByBannerName", notes = "Retorna coletas por nome da distribuidora", produces = "Paginação de Coleta")
+    @GetMapping(params = "bannerName")
+    public Page<Collect> findAllByBannerName(@RequestParam String bannerName, Pageable pageable) {
+        return collectService.findAllByBannerName(bannerName, pageable);
+    }
+
+    @ApiOperation(value = "findAllByDate", notes = "Retorna coletas por data dd-mm-yyyy", produces = "Paginação de Coleta")
+    @GetMapping(params = "date")
+    public Page<Collect> findAllByDate(@RequestParam String date, Pageable pageable) {
+        return collectService.findAllByDate(date, pageable);
+    }
 }

@@ -2,8 +2,10 @@ package com.example.selecaojava.controller;
 
 import com.example.selecaojava.model.*;
 import com.example.selecaojava.repository.*;
+import com.example.selecaojava.util.DateUtil;
 import com.example.selecaojava.util.FileUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.jni.Local;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,16 +61,24 @@ public class CollectControllerTest {
     private County county2;
     private Product product;
     private Banner banner;
+    private Banner banner2;
 
     @Before
     public void setUp() {
         region = regionRepository.findAll().iterator().next();
+
         List<County> counties = (List<County>) countyRepository.findAll();
         county = counties.get(0);
         county2 = counties.get(1);
         assertNotEquals(county.getName(), county2.getName());
+
         product = productRepository.findAll().iterator().next();
-        banner = bannerRepository.findAll().iterator().next();
+
+        List<Banner> banners = (List<Banner>) bannerRepository.findAll();
+        banner = banners.get(0);
+        banner2 = banners.get(1);
+
+        assertNotEquals(banner.getName(), banner2.getName());
 
         collect = getCollect();
     }
@@ -91,7 +101,6 @@ public class CollectControllerTest {
 
     private void makePost() throws Exception {
         String json = objectMapper.writeValueAsString(collect);
-        System.out.println(json);
         mvc.perform(post("/user/collections")
                 .with(user("user").roles(RoleName.USER))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -170,7 +179,7 @@ public class CollectControllerTest {
 
 
     @Test
-    public void go() throws Exception {
+    public void getAvgSalePriceByCountySucceeds() throws Exception {
         collectRepository.deleteAll();
         assertFalse(collectRepository.findAll().iterator().hasNext());
 
@@ -199,7 +208,7 @@ public class CollectControllerTest {
 
         Double avg = (p1 + p2) / 2.0;
 
-        mvc.perform(get("/user/collections/avgSalePrice?county=" + name)
+        mvc.perform(get("/user/collections/avgSalePrice?countyName=" + name)
                 .with(user("user").roles(RoleName.USER)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.is(avg)));
@@ -219,6 +228,69 @@ public class CollectControllerTest {
                 .with(user("user").roles(RoleName.USER)))
                 .andExpect(jsonPath("$", hasSize(996)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void findAllByBannerNameSucceeds() throws Exception {
+        collectRepository.deleteAll();
+        assertFalse(collectRepository.findAll().iterator().hasNext());
+
+        String name = banner.getName();
+
+        // Same banner
+        collect = getCollect();
+        collect.setBanner(banner);
+        collectRepository.save(collect);
+
+        // Same banner
+        collect = getCollect();
+        collect.setBanner(banner);
+        collectRepository.save(collect);
+
+        // Different banner
+        collect = getCollect();
+        collect.setBanner(banner2);
+        collectRepository.save(collect);
+
+        // 3 entities
+        assertEquals(3, collectRepository.findAll().spliterator().getExactSizeIfKnown());
+
+        mvc.perform(get("/user/collections?bannerName=" + name)
+                .with(user("user").roles(RoleName.USER)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(2)));
+    }
+
+    @Test
+    public void findAllByDateSucceeds() throws Exception {
+        collectRepository.deleteAll();
+        assertFalse(collectRepository.findAll().iterator().hasNext());
+
+        LocalDate date1 = DateUtil.getLocalDate("26/01/2019");
+        LocalDate date2 = DateUtil.getLocalDate("28/01/2019");
+
+        // Same date
+        collect = getCollect();
+        collect.setDate(date1);
+        collectRepository.save(collect);
+
+        // Same date
+        collect = getCollect();
+        collect.setDate(date1);
+        collectRepository.save(collect);
+
+        // Different date
+        collect = getCollect();
+        collect.setDate(date2);
+        collectRepository.save(collect);
+
+        // 3 entities
+        assertEquals(3, collectRepository.findAll().spliterator().getExactSizeIfKnown());
+
+        mvc.perform(get("/user/collections?date=26-01-2019")
+                .with(user("user").roles(RoleName.USER)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(2)));
     }
 
 }
