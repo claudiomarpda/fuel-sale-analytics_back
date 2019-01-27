@@ -293,4 +293,90 @@ public class CollectControllerTest {
                 .andExpect(jsonPath("$.content", hasSize(2)));
     }
 
+    @Test
+    public void getAvgSaleAndPurchasePriceByCountySucceeds() throws Exception {
+        collectRepository.deleteAll();
+        assertFalse(collectRepository.findAll().iterator().hasNext());
+
+        String name = county.getName();
+
+        // Same county
+        double p1 = 2;
+        double p11 = 4;
+        collect = getCollect();
+        collect.setSalePrice(p1);
+        collect.setPurchasePrice(p11);
+        collect.setCounty(county);
+        collectRepository.save(collect);
+
+        // Same county
+        double p2 = 4;
+        double p22 = 5;
+        collect = getCollect();
+        collect.setSalePrice(p2);
+        collect.setPurchasePrice(p22);
+        collect.setCounty(county);
+        collectRepository.save(collect);
+
+        // Different county
+        collect = getCollect();
+        collect.setSalePrice(9.0);
+        collect.setPurchasePrice(9.0);
+        collect.setCounty(county2);
+        collectRepository.save(collect);
+
+        // 3 entities
+        assertEquals(3, collectRepository.findAll().spliterator().getExactSizeIfKnown());
+
+        Double avg = (((p1 + p2) / 2.0) + ((p11 + p22) / 2.0) )/ 2.0;
+
+        mvc.perform(get("/user/collections/avgSaleAndPurchasePrice?countyName=" + name)
+                .with(user("user").roles(RoleName.USER)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.is(avg)));
+    }
+
+    @Test
+    public void getAvgSaleAndPurchasePriceByBannerSucceeds() throws Exception {
+        collectRepository.deleteAll();
+        assertFalse(collectRepository.findAll().iterator().hasNext());
+
+        String name = banner.getName();
+
+        // Same banner
+        double p1 = 2;
+        double p11 = 4;
+        collect = getCollect();
+        collect.setSalePrice(p1);
+        collect.setPurchasePrice(p11);
+        collect.setBanner(banner);
+        collectRepository.save(collect);
+
+        // Same banner
+        double p2 = 4;
+        double p22 = 5;
+        collect = getCollect();
+        collect.setSalePrice(p2);
+        collect.setPurchasePrice(p22);
+        collect.setBanner(banner);
+        collectRepository.save(collect);
+
+        // Different banner
+        collect = getCollect();
+        collect.setSalePrice(9.0);
+        collect.setPurchasePrice(9.0);
+        collect.setBanner(banner2);
+        collectRepository.save(collect);
+
+        // 3 entities
+        assertEquals(3, collectRepository.findAll().spliterator().getExactSizeIfKnown());
+
+        Double avg = (((p1 + p2) / 2.0) + ((p11 + p22) / 2.0) )/ 2.0;
+
+        mvc.perform(get("/user/collections/avgSaleAndPurchasePrice?bannerName=" + name)
+                .with(user("user").roles(RoleName.USER)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.is(avg)));
+    }
+
 }

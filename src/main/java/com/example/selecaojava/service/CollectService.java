@@ -27,6 +27,10 @@ public interface CollectService {
 
     Page<Collect> findAllByDate(String date, Pageable pageable);
 
+    Double getAvgSaleAndPurchasePriceByCounty(String countyName);
+
+    Double getAvgSaleAndPurchasePriceByBanner(String bannerName);
+
 }
 
 

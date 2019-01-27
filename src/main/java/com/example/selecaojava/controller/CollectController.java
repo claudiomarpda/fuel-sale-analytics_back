@@ -57,7 +57,7 @@ public class CollectController {
     /**
      * TODO: responder com detalhes do arquivo recebido: numero de registros, tamanho e nome do arquivo
      */
-    @ApiOperation(value = "importCsv", notes = "Arquivo separado por ; (ponto e vírgula)")
+    @ApiOperation(value = "importCsv", notes = "Importa arquivo separado por ; (ponto e vírgula)")
     @PostMapping(value = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> importCsv(@RequestParam MultipartFile file) {
         collectService.importCsv(file);
@@ -83,4 +83,17 @@ public class CollectController {
     public Page<Collect> findAllByDate(@RequestParam String date, Pageable pageable) {
         return collectService.findAllByDate(date, pageable);
     }
+
+    @ApiOperation(value = "getAvgSaleAndPurchasePriceByCountyName", notes = "Retorna o valor médio do valor da compra e do valor da venda por município")
+    @GetMapping(value = "/avgSaleAndPurchasePrice", params = "countyName")
+    public Double getAvgSaleAndPurchasePriceByCountyName(@RequestParam String countyName) {
+        return collectService.getAvgSaleAndPurchasePriceByCounty(countyName);
+    }
+
+    @ApiOperation(value = "getAvgSaleAndPurchasePriceByBannerName", notes = "Retorna o valor médio do valor da compra e do valor da venda por bandeira")
+    @GetMapping(value = "/avgSaleAndPurchasePrice", params = "bannerName")
+    public Double getAvgSaleAndPurchasePriceByBannerName(@RequestParam String bannerName) {
+        return collectService.getAvgSaleAndPurchasePriceByBanner(bannerName);
+    }
+
 }

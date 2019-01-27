@@ -114,4 +114,16 @@ public class CollectServiceImpl implements CollectService {
     public Page<Collect> findAllByDate(String date, Pageable pageable) {
         return collectRepository.findAllByDate(DateUtil.getDateForH2(date), pageable);
     }
+
+    @Override
+    public Double getAvgSaleAndPurchasePriceByCounty(String countyName) {
+        return (collectRepository.getAvgSalePriceByCountyName(countyName) +
+                collectRepository.getAvgPurchasePriceByCountyName(countyName)) / 2.0;
+    }
+
+    @Override
+    public Double getAvgSaleAndPurchasePriceByBanner(String bannerName) {
+        return (collectRepository.getAvgSalePriceByBannerName(bannerName) +
+                collectRepository.getAvgPurchasePriceByBannerName(bannerName)) / 2.0;
+    }
 }
