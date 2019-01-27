@@ -57,7 +57,7 @@ public class CollectController {
     /**
      * TODO: responder com detalhes do arquivo recebido: numero de registros, tamanho e nome do arquivo
      */
-    @ApiOperation(value = "importCsv", notes = "Importa arquivo separado por ; (ponto e vírgula)")
+    @ApiOperation(value = "importCsv", notes = "SE;SP;TATUI;AUTO POSTO MORRO DE TATUI LTDA;GASOLINA;24/04/2018;3,559000;4,149000;R$ / litro;RAIZEN")
     @PostMapping(value = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> importCsv(@RequestParam MultipartFile file) {
         collectService.importCsv(file);
@@ -66,7 +66,7 @@ public class CollectController {
         return ResponseEntity.created(location).build();
     }
 
-    @ApiOperation(value = "getAllFromCsvByRegionCode", notes = "Retorna coletas de arquivo CSV de acordo com código da região")
+    @ApiOperation(value = "getAllFromCsvByRegionCode", notes = "SE;SP;TATUI;AUTO POSTO MORRO DE TATUI LTDA;GASOLINA;24/04/2018;3,559000;4,149000;R$ / litro;RAIZEN")
     @PostMapping(value = "/allFromCsv", params = "regionCode", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<Collect> getAllFromCsvByRegionCode(@RequestParam MultipartFile file, @RequestParam String regionCode) {
         return collectService.getAllFromImportedCsvByRegionCode(file, regionCode);
