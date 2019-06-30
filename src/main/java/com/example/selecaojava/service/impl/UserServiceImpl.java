@@ -9,6 +9,8 @@ import com.example.selecaojava.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -57,6 +59,11 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
         User user = findById(id);
         userRepository.deleteById(user.getId());
+    }
+
+    @Override
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
     }
 
     private void checkEmailExists(User user) {

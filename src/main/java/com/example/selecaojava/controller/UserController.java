@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/users")
@@ -41,6 +42,11 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteById(@PathVariable long userId) {
         userService.deleteById(userId);
+    }
+
+    @GetMapping
+    public Iterable<User> findAll() {
+        return userService.findAll();
     }
 
 }
