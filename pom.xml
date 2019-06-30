@@ -8,10 +8,10 @@
         <version>2.1.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>selecao-java</artifactId>
+    <groupId>com.mz</groupId>
+    <artifactId>fuel_sale_analytics_back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>selecao-java</name>
+    <name>fuel_sale_analytics_back</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
