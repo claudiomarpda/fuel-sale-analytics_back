@@ -82,7 +82,7 @@ public class CollectServiceImpl implements CollectService {
         }
 
         try {
-            String fileAsString = new String(file.getBytes(), StandardCharsets.UTF_8);
+            String fileAsString = new String(file.getBytes(), StandardCharsets.UTF_8).replaceAll("\r", "");
             return new CollectsReaderUtil(regionRepository, productRepository, bannerRepository, countyRepository).readCsv(fileAsString);
         } catch (IOException e) {
             throw new InvalidInputException("Falha ao ler bytes de arquivo");
